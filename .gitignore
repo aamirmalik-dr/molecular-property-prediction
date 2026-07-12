@@ -16,10 +16,18 @@ env/
 .coverage
 htmlcov/
 
-# Data and generated artifacts (fetched or produced locally, never committed)
+# Data: ignore the full downloaded set, keep the committed license-clean sample.
 data/*
 !data/README.md
-results/
+!data/sample_smiles.csv
+
+# Generated artifacts: keep the committed figures and metrics, ignore the rest.
+results/*
+!results/learning_curves.png
+!results/parity.png
+!results/metrics.json
+
+# Trained-weight checkpoints (large; regenerate with the benchmark script).
 *.pt
 *.pth
 *.pth.tar
