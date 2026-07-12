@@ -1,10 +1,18 @@
 # Data
 
-This directory is gitignored. No datasets are committed.
-
 The regression target is computed by RDKit from each molecule's structure
 (logP, TPSA, or molecular weight), so only SMILES strings are needed and every
 benchmark is reproducible with no dataset license concern.
+
+## Committed sample
+
+`sample_smiles.csv` (300 rows) is committed and license-clean: the SMILES are a
+carved subset of the public MoleculeNet ESOL (Delaney) SMILES column, and the
+`logp` column is computed by RDKit (`Crippen.MolLogP`). It is a public subset,
+not synthetic. `molprop.load_sample()` reads a copy of this file bundled inside
+the package and drives the fully offline quickstart, examples, and tests.
+
+Everything else in this directory (full downloads) stays gitignored.
 
 ## Downloaded SMILES
 
