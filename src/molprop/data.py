@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 from dataclasses import dataclass
+from importlib import resources
 
 import numpy as np
 import torch
@@ -11,6 +12,9 @@ from rdkit import Chem
 
 from molprop.featurize import compute_target, morgan_fingerprint
 from molprop.tokenizer import SmilesTokenizer
+
+# Name of the license-clean sample shipped with the package for offline use.
+SAMPLE_CSV = "sample_smiles.csv"
 
 # A built-in set of valid SMILES for offline runs and tests. Literal molecule
 # strings, not a redistributed dataset.
@@ -125,6 +129,38 @@ def build_dataset(
         targets=np.asarray(targets, dtype=np.float32),
         tokenizer=tokenizer,
     )
+
+
+def load_sample(
+    target: str = "logp",
+    n_bits: int = 1024,
+    tokenizer: SmilesTokenizer | None = None,
+) -> PropertyDataset:
+    """Load the packaged sample dataset with no network access.
+
+    Reads the few hundred public SMILES shipped inside the package
+    (``sample_smiles.csv``) and builds a :class:`PropertyDataset` whose target is
+    recomputed by RDKit, so the result is fully reproducible offline. This is the
+    fastest way to get a working dataset for the quickstart and examples.
+
+    Args:
+        target: RDKit descriptor target, one of ``"logp"``, ``"tpsa"``, ``"mw"``.
+        n_bits: Morgan fingerprint length.
+        tokenizer: Optional pre-fit tokenizer to reuse; a new one is fit if None.
+
+    Returns:
+        A :class:`PropertyDataset` over the sample molecules.
+    """
+    text = resources.files("molprop").joinpath(SAMPLE_CSV).read_text(encoding="utf-8")
+    reader = csv.DictReader(text.splitlines())
+    column = next(
+        (c for c in (reader.fieldnames or []) if "smiles" in c.lower()),
+        None,
+    )
+    if column is None:
+        raise KeyError(f"no SMILES column in packaged {SAMPLE_CSV}")
+    smiles = [row[column] for row in reader if row[column]]
+    return build_dataset(smiles, target=target, n_bits=n_bits, tokenizer=tokenizer)
 
 
 def load_smiles_csv(csv_path: str, column: str | None = None) -> list[str]:

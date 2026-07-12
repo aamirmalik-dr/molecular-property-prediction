@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "molprop"
-version = "0.1.0"
+version = "0.2.0"
 description = "Comparison of molecular representations (fingerprint, SMILES CNN, SMILES RNN) for property prediction"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,6 +27,9 @@ Repository = "https://github.com/aamirmalik-dr/molecular-property-prediction"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+molprop = ["sample_smiles.csv"]
 
 [tool.ruff]
 line-length = 100
