@@ -1,7 +1,5 @@
 # molecular-property-prediction
 
-*Origin: Originally developed for the AI Chemistry course at KAIST (Fall 2022); refactored and open-sourced in July 2026.*
-
 A small PyTorch library for comparing molecular representations on a regression
 target. Three interchangeable encoders, a shared trainer with early stopping, and
 a pluggable interface so you can drop in your own encoder and benchmark it against
@@ -163,3 +161,7 @@ MIT, see [LICENSE](LICENSE).
 
 Aamir Malik. [GitHub](https://github.com/aamirmalik-dr) ·
 [LinkedIn](https://linkedin.com/in/dr-aamirmalik)
+
+---
+
+*Refactored and engineered into this tested, reproducible project in July 2026, from work originally done for the AI Chemistry course at KAIST (Fall 2022).*
